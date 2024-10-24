@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Register</title>
+</head>
+<body>
+    <header>
+        <h2 class="logo logo1">LifeSavvy Techies</h2>
+        <nav class="navigation">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+            <button type="submit" class="btnLogin" onclick="location.href='Login.html'">Login</button>
+        </nav>
+    </header>
+    <div class="main main1">
+        <h1>Register</h1>
+        <div class="input1">
+            <input type="text" id="email" placeholder="E-Mail" required> 
+            <i class='bx bxs-user'></i>
+        </div>
+        <div class="input1">
+            <input type="password" id="password" placeholder="Password" required> 
+            <i class='bx bxs-lock-alt'></i>
+        </div>
+        <div class="input1">
+            <input type="password" id="cpassword" placeholder="Confirm Password" required> 
+            <i class='bx bxs-lock-alt'></i>
+        </div>
+        <div class="remember">
+            <label><input type="checkbox"> I agree to terms and conditions</label>
+        </div>
+        <button type="submit" class="btn" onclick="test()">Register</button>
+        <div class="register">
+            <p>Already have an account? <a href="Login.html">Login</a></p>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

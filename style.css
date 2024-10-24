@@ -59,23 +59,44 @@ body {
 
 /* Features Section */
 /* Features Section */
+/* Features Section */
+/* Features Section */
 .features {
     background-color: #f9f9f9;
+    padding-bottom: 80px; /* Add more padding to create space */
 }
 
-.feature-box {
+/* Footer */
+footer {
     background-color: #ffffff;
+    padding: 40px 0;
+    margin-top: 50px; /* Adds distance between footer and the previous section */
+    color: #333;
+}
+
+
+.feature-box {
+    background-color: #ffffff; /* Common background color for all feature boxes */
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
     transition: all 0.3s ease;
     height: 100%;
+    cursor: pointer; /* Change cursor to pointer */
 }
 
+/* Hover Effect */
 .feature-box:hover {
     transform: translateY(-10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: #e9ecef; /* Light gray for hover */
 }
+
+/* Active State */
+.feature-box.active {
+    background-color: #d1e7dd; /* Change color on click */
+}
+
 
 .feature-box img {
     max-height: 150px;
@@ -100,6 +121,7 @@ body {
 footer {
     background-color: #ffffff;
     padding: 40px 0;
+    margin-top: 50px; /* Adds distance between footer and the previous section */
     color: #333;
 }
 
