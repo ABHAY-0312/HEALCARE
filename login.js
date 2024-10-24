@@ -10,7 +10,7 @@ function test1() {
     if (email === storedEmail && password === storedPassword) {
         alert("Login Successful!");
         // Redirect to the main page after successful login
-        location.href = 'index.html'; // Change this to your main page
+        location.href = 'index1.html'; // Change this to your main page
     } else {
         alert("Invalid input. Please try again.");
     }
@@ -27,7 +27,7 @@ function test() {
         localStorage.setItem("password", password);
         alert("Registration successful!");
         // Redirect to the login page after registration
-        location.href = 'Login.html';
+        location.href = 'index.html';
     } else {
         alert("Passwords do not match. Please try again.");
     }
