@@ -23,10 +23,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
+                        <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Add Record</a>
+                        <a class="nav-link" href="healthrecord.html">Add Record</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="symptom.html">Symptom Checker</a>
@@ -56,25 +56,26 @@
 
     <!-- Features Section -->
     <!-- Features Section -->
+<!-- Features Section -->
 <section class="features py-5">
     <div class="container">
         <div class="row text-center">
             <div class="col-md-4">
-                <div class="feature-box shadow-sm">
+                <div class="feature-box shadow-sm" onclick="setActive(this)">
                     <img src="image/recordimage.jpg" alt="Digital Health Records" class="img-fluid mb-3">
-                    <h3>Digital Health Records</h3>
+                    <h3><a href="healthrecord.html">Digital Health Records</a></h3>
                     <p>Easily manage your personal health records with our secure and intuitive platform.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box shadow-sm">
+                <div class="feature-box shadow-sm" onclick="setActive(this)">
                     <img src="image/onlineconsultimage.avif" alt="Virtual Consultations" class="img-fluid mb-3">
-                    <h3><a href="doctor.html">Consultations</a> </h3>
+                    <h3><a href="doctor.html">Consultations</a></h3>
                     <p>Connect with top healthcare professionals from the comfort of your home.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-box shadow-sm">
+                <div class="feature-box shadow-sm" onclick="setActive(this)">
                     <img src="image/symptomimage.jpg" alt="Symptom Checker" class="img-fluid mb-3">
                     <h3><a href="symptom.html">Symptom Checker</a></h3>
                     <p>Get preliminary insights and advice based on the symptoms you report.</p>
@@ -120,6 +121,19 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function setActive(element) {
+            // Remove active class from all feature boxes
+            const boxes = document.querySelectorAll('.feature-box');
+            boxes.forEach(box => {
+                box.classList.remove('active');
+            });
+        
+            // Add active class to the clicked box
+            element.classList.add('active');
+        }
+        </script>
+        
 
 </body>
 </html>
