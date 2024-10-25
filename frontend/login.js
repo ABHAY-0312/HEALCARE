@@ -10,7 +10,7 @@ function test1() {
     if (email === storedEmail && password === storedPassword) {
         alert("Login Successful!");
         // Redirect to the main page after successful login
-        location.href = 'index1.html'; // Change this to your main page
+        location.href = 'main.html'; // Change this to your main page
     } else {
         alert("Invalid input. Please try again.");
     }
