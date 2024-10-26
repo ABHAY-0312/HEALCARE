@@ -1,8 +1,11 @@
+// Load environment variables from .env file
 require('dotenv').config();
 
+// Log API keys for debugging (remove in production!)
 console.log("API_KEY:", process.env.API_KEY);
 console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY);
 
+// Check for missing API keys and exit if they are not present
 if (!process.env.API_KEY || !process.env.GEMINI_API_KEY) {
     console.error("Missing API keys in .env file.");
     process.exit(1); // Exit the application if keys are missing
@@ -13,7 +16,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer'); // Import multer only once
+const multer = require('multer');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const app = express();
@@ -29,6 +32,11 @@ app.use(session({ secret: 'secret-key', resave: false, saveUninitialized: true }
 // Initialize Google Generative AI with Gemini API Key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// Temporary in-memory storage for users, health records, and appointments
+const users = {}; 
+const healthRecords = {}; 
+const appointments = {}; // Ensure this declaration exists
 
 // Check Symptoms route
 app.post('/check-symptoms', async (req, res) => {
@@ -46,14 +54,11 @@ app.post('/check-symptoms', async (req, res) => {
     }
 });
 
-// Temporary in-memory storage for users and health records
-const users = {}; 
-const healthRecords = {}; 
-
 // Register route
 app.post('/register', (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
+    // Validate input
     if (!email || !password || password !== confirmPassword) {
         return res.status(400).json({ message: 'Invalid input or passwords do not match' });
     }
@@ -62,6 +67,7 @@ app.post('/register', (req, res) => {
         return res.status(400).json({ message: 'User already exists' });
     }
 
+    // Store new user
     users[email] = { email, password };
     res.status(200).json({ message: 'Registration successful!' });
 });
@@ -70,6 +76,7 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
+    // Authenticate user
     if (users[email] && users[email].password === password) {
         req.session.user = email;
         res.status(200).json({ message: 'Login successful!' });
@@ -83,6 +90,7 @@ app.post('/api/health-records', (req, res) => {
     const { name, age, gender, medicalHistory } = req.body;
     const userEmail = req.session.user;
 
+    // Validate input
     if (!name || !age || !gender || !medicalHistory) {
         return res.status(400).json({ message: 'All fields are required' });
     }
@@ -91,6 +99,7 @@ app.post('/api/health-records', (req, res) => {
         healthRecords[userEmail] = [];
     }
 
+    // Create new health record
     const newRecord = { name, age, gender, medicalHistory };
     healthRecords[userEmail].push(newRecord);
 
@@ -123,7 +132,7 @@ app.delete('/api/health-records', (req, res) => {
     }
 });
 
-// Set up multer for file uploads (only one declaration here)
+// Set up multer for file uploads
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => cb(null, 'uploads'),
@@ -131,7 +140,6 @@ const upload = multer({
     })
 });
 
-// Route for feedback submission
 // Route for feedback submission
 app.post('/submit-feedback', upload.single('image'), (req, res) => {
     const { name, phone, email, issue, title, feedback, rating } = req.body;
@@ -149,6 +157,37 @@ app.post('/submit-feedback', upload.single('image'), (req, res) => {
 
     // Respond back to the frontend
     res.json({ message: "Thank you for your feedback!" });
+});
+
+// Appointment booking route
+app.post('/book-appointment', (req, res) => {
+    const { doctorName, patientName, date, time } = req.body;
+    const userEmail = req.session.user;
+
+    console.log("Booking Appointment:", { doctorName, patientName, date, time, userEmail });
+
+    if (!userEmail) {
+        console.error("Attempt to book appointment without being logged in.");
+        return res.status(403).json({ message: 'User not logged in' });
+    }
+
+    if (!doctorName || !patientName || !date || !time) {
+        console.error("Missing appointment fields:", { doctorName, patientName, date, time });
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const appointmentId = `${userEmail}-${Date.now()}`; // Unique appointment ID
+    const newAppointment = { appointmentId, doctorName, patientName, date, time };
+
+    // Store the appointment in memory
+    if (!appointments[userEmail]) {
+        appointments[userEmail] = [];
+    }
+
+    appointments[userEmail].push(newAppointment);
+
+    console.log('New Appointment Booked:', newAppointment);
+    res.status(201).json({ message: 'Appointment booked successfully!', appointment: newAppointment });
 });
 
 // Start server
