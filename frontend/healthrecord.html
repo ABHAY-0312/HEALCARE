@@ -1,10 +1,12 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Health Record</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="healthrecord.css">
-    </head>
+</head>
 <body>
     <nav class="navbar navbar-light bg-light">
         <div class="container">
@@ -19,26 +21,24 @@
 
     <div class="form-container">
         <div class="form-title">Add Health Record</div>
-        <form>
+        <form id="healthRecordForm">
             <div class="form-group mb-3">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter full name">
-                
+                <input type="text" class="form-control" id="name" placeholder="Enter full name" required>
             </div>
             <div class="form-group mb-3">
                 <label for="age">Age</label>
-                <input type="number" class="form-control" id="age" placeholder="18">
-              
+                <input type="number" class="form-control" id="age" placeholder="18" required>
             </div>
             <div class="form-group mb-3">
                 <label>Gender</label>
                 <div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
                         <label class="form-check-label" for="male">Male</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
                         <label class="form-check-label" for="female">Female</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -49,11 +49,17 @@
             </div>
             <div class="form-group mb-3">
                 <label for="medicalHistory">Medical History</label>
-                <textarea class="form-control" id="medicalHistory" rows="3" placeholder="Describe medical history"></textarea>
-               
+                <textarea class="form-control" id="medicalHistory" rows="3" placeholder="Describe medical history" required></textarea>
             </div>
             <button type="submit" class="btn btn-submit">Submit</button>
         </form>
+        
+        <div class="button-group mb-4 mt-4"> <!-- Added mt-4 for top margin -->
+            <button id="loadRecords" class="btn btn-primary me-2">Load Past Records</button>
+            <button id="clearRecords" class="btn btn-danger">Clear Records</button>
+        </div>
+
+        <ul id="recordList" class="list-group"></ul>
     </div>
 
     <div class="footer">
@@ -64,5 +70,7 @@
             <a href="#">Contact Us</a>
         </p>
     </div>
+    
+    <script src="healthrecord.js"></script>
 </body>
 </html>
