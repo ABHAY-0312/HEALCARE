@@ -38,7 +38,8 @@ header {
 
 .navigation {
     display: flex;
-    flex-wrap: wrap; /* Allow navigation links to wrap */
+    flex-wrap: wrap; 
+    /* Allow navigation links to wrap */
 }
 
 .navigation a {
@@ -47,7 +48,16 @@ header {
     color: #fff;
     text-decoration: none;
     margin-left: 20px; /* Adjust margin */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+    padding: 8px 12px; /* Padding for a more interactive effect */
+    border-radius: 5px; /* Rounded edges */
 }
+
+.navigation a:hover {
+    color: #162938; /* Darker color on hover */
+    background-color: rgba(255, 255, 255, 0.7); /* Slight background color change */
+}
+
 
 .navigation .btnLogin {
     width: 130px;

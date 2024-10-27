@@ -21,14 +21,14 @@
 
     <div class="form-container">
         <div class="form-title">Add Health Record</div>
-        <form id="healthRecordForm">
+        <form id="healthRecordForm" method="POST" enctype="multipart/form-data">
             <div class="form-group mb-3">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter full name" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" required>
             </div>
             <div class="form-group mb-3">
                 <label for="age">Age</label>
-                <input type="number" class="form-control" id="age" placeholder="18" required>
+                <input type="number" class="form-control" id="age" name="age" placeholder="18" required>
             </div>
             <div class="form-group mb-3">
                 <label>Gender</label>
@@ -49,12 +49,16 @@
             </div>
             <div class="form-group mb-3">
                 <label for="medicalHistory">Medical History</label>
-                <textarea class="form-control" id="medicalHistory" rows="3" placeholder="Describe medical history" required></textarea>
+                <textarea class="form-control" id="medicalHistory" name="medicalHistory" rows="3" placeholder="Describe medical history" required></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="file">Upload Document (optional)</label>
+                <input type="file" class="form-control" id="file" name="file">
             </div>
             <button type="submit" class="btn btn-submit">Submit</button>
         </form>
         
-        <div class="button-group mb-4 mt-4"> <!-- Added mt-4 for top margin -->
+        <div class="button-group mb-4 mt-4">
             <button id="loadRecords" class="btn btn-primary me-2">Load Past Records</button>
             <button id="clearRecords" class="btn btn-danger">Clear Records</button>
         </div>
@@ -67,7 +71,7 @@
         <p>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
-            <a href="#">Contact Us</a>
+            <a href="contact.html">Contact Us</a>
         </p>
     </div>
     

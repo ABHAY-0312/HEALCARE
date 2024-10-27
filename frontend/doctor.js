@@ -10,23 +10,23 @@ async function submitAppointment() {
     const doctorName = document.getElementById('doctorName').value;
     const appointmentDate = document.getElementById('appointmentDate').value;
     const appointmentTime = document.getElementById('appointmentTime').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const medicalReports = document.getElementById('medicalReports').files[0]; // Get the file
 
-    const appointmentDetails = {
-        patientName,
-        doctorName,
-        date: appointmentDate,
-        time: appointmentTime
-    };
+    const appointmentDetails = new FormData();
+    appointmentDetails.append('patientName', patientName);
+    appointmentDetails.append('doctorName', doctorName);
+    appointmentDetails.append('date', appointmentDate);
+    appointmentDetails.append('time', appointmentTime);
+    appointmentDetails.append('phoneNumber', phoneNumber);
+    appointmentDetails.append('medicalReports', medicalReports);
 
     console.log("Submitting appointment:", appointmentDetails); // Log appointment details
 
     try {
         const response = await fetch('/book-appointment', {  // Change to the correct endpoint
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(appointmentDetails),
+            body: appointmentDetails, // Send FormData directly
         });
 
         console.log("Response status:", response.status); // Log response status
@@ -37,13 +37,15 @@ async function submitAppointment() {
         }
 
         const data = await response.json();
-        alert(data.message); // Show success message
+        alert("Appointment booked successfully. We will contact you soon!"); // Success message
         $('#bookingModal').modal('hide'); // Hide modal after booking
     } catch (error) {
         console.error("Error booking appointment:", error);
         alert("An error occurred while booking the appointment: " + error.message);
     }
 }
+
+
 
 // Use this function to trigger opening the modal from your button
 function onBookAppointmentClick(doctorName) {

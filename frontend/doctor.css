@@ -39,3 +39,6 @@ body {
     text-align: center;
     font-size: 14px;
 }
+.btn-primary {
+    margin-top: 10px; /* Add margin to create space */
+}

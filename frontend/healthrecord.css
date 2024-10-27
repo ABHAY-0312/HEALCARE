@@ -32,6 +32,10 @@ body {
     background-color: #000;
     color: #fff;
     width: 100%;
+    transition: background-color 0.3s;
+}
+.btn-submit:hover {
+    background-color: #444; /* Darker shade on hover */
 }
 .footer {
     text-align: center;
