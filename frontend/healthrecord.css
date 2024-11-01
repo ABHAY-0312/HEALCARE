@@ -2,11 +2,25 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
 }
+.navbar {
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease; /* Smooth transition for box shadow */
+}
+
+/* Navbar shadow on hover */
+.navbar:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as desired */
+}
 .navbar-brand {
     font-weight: bold;
 }
 .nav-link {
     margin-right: 20px;
+    color: #00416d; /* Original color */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+.nav-link:hover {
+    color: #007bff; /* Change to your desired color on hover */
 }
 .form-container {
     background-color: #fff;

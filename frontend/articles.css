@@ -1,0 +1,40 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', sans-serif;
+}
+.navbar-brand img {
+    height: 30px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.card img {
+    border-radius: 10px;
+    max-height: 200px; /* Ensures all images have the same max height */
+    object-fit: cover; /* Maintains aspect ratio without distortion */
+}
+.card-body {
+    flex-grow: 1; /* This allows the card body to take up remaining space */
+}
+.footer {
+    background-color: #f8d7da;
+    padding: 20px 0;
+    margin-top: auto; /* This pushes the footer to the bottom */
+}
+.footer a {
+    color: #000;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.content-section {
+    margin-bottom: 50px;
+}

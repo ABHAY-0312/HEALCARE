@@ -16,8 +16,8 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="main.html">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="symptom.html">Symptom Checker</a></li>
-                <li class="nav-item"><a class="nav-link" href="doctor.html">Doctor Consultation</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link active" href="doctor.html">Doctor Consultation</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
             </ul>
         </div>
     </div>
@@ -70,43 +70,42 @@
 </div>
 
 <!-- Booking Modal -->
-<div class="modal" id="bookingModal">
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Book Appointment</h5>
+                <h5 class="modal-title" id="bookingModalLabel">Book Appointment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="appointmentForm" enctype="multipart/form-data">
-                    <input type="hidden" id="doctorName">
+                    <input type="hidden" id="doctorName" name="doctorName">
                     <div class="form-group">
                         <label for="patientName">Patient Name:</label>
-                        <input type="text" class="form-control" id="patientName" required>
+                        <input type="text" class="form-control" id="patientName" name="patientName" required>
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber">Phone Number:</label>
-                        <input type="tel" class="form-control" id="phoneNumber" required>
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required>
                     </div>
                     <div class="form-group">
                         <label for="appointmentDate">Appointment Date:</label>
-                        <input type="date" class="form-control" id="appointmentDate" required>
+                        <input type="date" class="form-control" id="appointmentDate" name="date" required>
                     </div>
                     <div class="form-group">
                         <label for="appointmentTime">Appointment Time:</label>
-                        <input type="time" class="form-control" id="appointmentTime" required>
+                        <input type="time" class="form-control" id="appointmentTime" name="time" required>
                     </div>
                     <div class="form-group">
                         <label for="medicalReports">Upload Medical Reports:</label>
-                        <input type="file" class="form-control-file" id="medicalReports" name="medicalReports" required>
+                        <input type="file" class="form-control-file" id="medicalReports" name="medicalReports">
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="submitAppointment()">Book Appointment</button>
+                    <button type="button" class="btn btn-primary mt-3" onclick="submitAppointment()">Book Appointment</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

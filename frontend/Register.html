@@ -11,11 +11,11 @@
     <header>
         <h2 class="logo logo1">LifeSavvy Techies</h2>
         <nav class="navigation">
-            <a href="#">Home</a>
-            <a href="#">About</a>
+            <a href="Register.html">Home</a>
+            <a href="Aboutus.html">About</a>
             <a href="#">Services</a>
-            <a href="#">Contact</a>
-            <button type="submit" class="btnLogin" onclick="location.href='Login.html'">Login</button>
+            <a href="contact.html">Contact</a>
+            <button type="submit" class="btnLogin" onclick="location.href='index.html'">Login</button>
         </nav>
     </header>
     <div class="main main1">
@@ -33,14 +33,13 @@
             <i class='bx bxs-lock-alt'></i>
         </div>
         <div class="remember">
-            <label><input type="checkbox"> I agree to terms and conditions</label>
+            <label><input type="checkbox" id="termsCheckbox"> I agree to <a href="terms.html" target="_blank">terms and conditions</a></label>
         </div>
         <button type="submit" class="btn" onclick="test()">Register</button>
         <div class="register">
             <p>Already have an account? <a href="index.html">Login</a></p>
         </div>
     </div>
-
-    <script src="login.js"></script>
+    <script src="Register.js"></script>
 </body>
 </html>

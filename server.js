@@ -82,7 +82,7 @@ app.post('/login', (req, res) => {
     }
 });
 
-// Add health records route with file upload support
+// Add health records route
 app.post('/api/health-records', upload.single('file'), (req, res) => {
     const { name, age, gender, medicalHistory } = req.body;
     const userEmail = req.session.user;
@@ -126,14 +126,9 @@ app.delete('/api/health-records', (req, res) => {
         return res.status(403).json({ message: 'User not logged in' });
     }
 
-    if (healthRecords[userEmail]) {
-        delete healthRecords[userEmail];
-        res.status(200).json({ message: 'Health records cleared successfully!' });
-    } else {
-        res.status(404).json({ message: 'No records found to clear.' });
-    }
+    healthRecords[userEmail] = [];
+    res.status(200).json({ message: 'All records cleared successfully!' });
 });
-
 // Feedback submission route
 app.post('/submit-feedback', upload.single('image'), (req, res) => {
     const { name, phone, email, issue, title, feedback, rating } = req.body;
@@ -143,16 +138,26 @@ app.post('/submit-feedback', upload.single('image'), (req, res) => {
     console.log("Name:", name);
     console.log("Phone:", phone);
     console.log("Email:", email);
-    console.log("Issue:", issue);
     console.log("Title:", title);
-    console.log("Feedback:", feedback);
+    console.log("Issue Description:", feedback);
     console.log("Rating:", rating);
     if (image) console.log("Image file received:", image.filename);
 
     res.json({ message: "Thank you for your feedback!" });
 });
 
-// Appointment booking route
+// Check availability route
+app.post('/check-availability', (req, res) => {
+    const { doctorName, date, time } = req.body;
+
+    const isAvailable = !appointments[doctorName] || 
+        !appointments[doctorName].some(appointment => 
+            appointment.date === date && appointment.time === time);
+
+    res.json({ isAvailable, message: isAvailable ? 'Slot available' : 'Slot already booked' });
+});
+
+// Book appointment route
 app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     const { doctorName, patientName, date, time, phoneNumber } = req.body;
     const userEmail = req.session.user;
@@ -163,6 +168,35 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
 
     if (!doctorName || !patientName || !date || !time || !phoneNumber) {
         return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    const hasBookedWithSameDoctorOnSameDay = appointments[userEmail]?.some(
+        appointment => appointment.doctorName === doctorName && appointment.date === date
+    );
+
+    if (hasBookedWithSameDoctorOnSameDay) {
+        return res.status(400).json({ message: 'Only one appointment per doctor per day is allowed.' });
+    }
+
+    const appointmentStart = new Date(`${date}T${time}`);
+    const appointmentEnd = new Date(appointmentStart.getTime() + 30 * 60000);
+
+    const isConflict = appointments[doctorName]?.some(appointment => {
+        const existingStart = new Date(appointment.date + 'T' + appointment.time);
+        const existingEnd = new Date(existingStart.getTime() + 30 * 60000);
+        return appointmentStart < existingEnd && existingStart < appointmentEnd;
+    });
+
+    if (isConflict) {
+        return res.status(400).json({ message: 'Time slot already booked.' });
+    }
+
+    if (appointments[doctorName]?.filter(appt => appt.date === date).length >= 3) {
+        return res.status(400).json({ message: 'Doctor reached appointment limit for the day.' });
+    }
+
+    if (appointmentStart < new Date()) {
+        return res.status(400).json({ message: 'Cannot book in the past.' });
     }
 
     const appointmentId = `${userEmail}-${Date.now()}`;
@@ -176,13 +210,15 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
         medicalReport: req.file ? req.file.filename : null
     };
 
-    if (!appointments[userEmail]) {
-        appointments[userEmail] = [];
-    }
+    if (!appointments[userEmail]) appointments[userEmail] = [];
+    if (!appointments[doctorName]) appointments[doctorName] = [];
 
     appointments[userEmail].push(newAppointment);
+    appointments[doctorName].push(newAppointment);
 
     console.log('New Appointment Booked:', newAppointment);
+    
+    // Respond with success message
     res.status(201).json({ message: 'Appointment booked successfully!', appointment: newAppointment });
 });
 

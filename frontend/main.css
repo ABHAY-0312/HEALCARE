@@ -29,6 +29,20 @@ body {
 .nav-link:hover {
     color: #00416d;
 }
+/* Navbar Hover Effect */
+.navbar .nav-link {
+    font-size: 1rem;
+    color: #00416d;
+    padding: 10px 20px;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.navbar .nav-link:hover {
+    background-color: #e0f7fa; /* Light teal background color on hover */
+    color: #007bff; /* Change text color on hover */
+}
+
 
 /* Hero Section */
 .hero {

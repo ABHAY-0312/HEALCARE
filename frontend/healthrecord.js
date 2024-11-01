@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const healthRecordForm = document.getElementById('healthRecordForm');
+    const recordList = document.getElementById('recordList');
+    const loadRecordsButton = document.getElementById('loadRecords');
+    const clearRecordsButton = document.getElementById('clearRecords');
 
+    // Submit health record form
     healthRecordForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
         const formData = new FormData(healthRecordForm);
 
         try {
@@ -25,23 +28,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('loadRecords').addEventListener('click', async () => {
+    // Load health records
+    loadRecordsButton.addEventListener('click', async () => {
         try {
             const response = await fetch('/api/health-records');
             if (response.ok) {
                 const records = await response.json();
-                const recordList = document.getElementById('recordList');
                 recordList.innerHTML = '';
 
                 if (records.length === 0) {
-                    recordList.innerHTML = '<li class="list-group-item">No records found.</li>'; // Display message when no records are found
+                    recordList.innerHTML = '<li class="list-group-item">No records found.</li>';
                 } else {
                     records.forEach(record => {
                         const listItem = document.createElement('li');
                         listItem.className = 'list-group-item';
                         listItem.innerHTML = `
                             Name: ${record.name}, Age: ${record.age}, Gender: ${record.gender}, 
-                            Medical History: ${record.medicalHistory} 
+                            Medical History: ${record.medicalHistory}
                             ${record.file ? `<br><a href="/uploads/${record.file}" target="_blank">View Document</a>` : ''}
                         `;
                         recordList.appendChild(listItem);
@@ -56,14 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.getElementById('clearRecords').addEventListener('click', async () => {
-        const confirmClear = confirm("Are you sure you want to clear all records?");
-        if (confirmClear) {
+    // Clear all health records
+    clearRecordsButton.addEventListener('click', async () => {
+        if (confirm("Are you sure you want to clear all records?")) {
             try {
                 const response = await fetch('/api/health-records', { method: 'DELETE' });
                 if (response.ok) {
-                    document.getElementById('recordList').innerHTML = '';
+                    recordList.innerHTML = '';
                     alert('All records have been cleared successfully!');
+                } else {
+                    alert('Failed to clear health records.');
                 }
             } catch (error) {
                 console.error('Error:', error);
