@@ -9,21 +9,14 @@ function openBookingModal(doctorName) {
 }
 
 async function submitAppointment() {
-    // Collect appointment data as before
     const patientName = document.getElementById('patientName').value;
     const doctorName = document.getElementById('doctorName').value;
     const appointmentDate = document.getElementById('appointmentDate').value;
     const appointmentTime = document.getElementById('appointmentTime').value;
-       // Run availability check before booking
-       const isAvailable = await checkAvailability(doctorName, appointmentDate, appointmentTime);
-       if (!isAvailable) {
-           alert('Time slot already booked. Please select a different time.');
-           return;
-       }
     const phoneNumber = document.getElementById('phoneNumber').value;
     const medicalReports = document.getElementById('medicalReports').files[0];
     const appointmentDetails = new FormData();
-    
+  
     appointmentDetails.append('patientName', patientName);
     appointmentDetails.append('doctorName', doctorName);
     appointmentDetails.append('date', appointmentDate);
@@ -31,6 +24,9 @@ async function submitAppointment() {
     appointmentDetails.append('phoneNumber', phoneNumber);
     appointmentDetails.append('medicalReports', medicalReports);
 
+    const isAvailable = await checkAvailability(doctorName, appointmentDate, appointmentTime);
+    if (!isAvailable) return;  // If slot unavailable, show message and return early
+    
     try {
         const response = await fetch('/book-appointment', {
             method: 'POST',
@@ -38,16 +34,17 @@ async function submitAppointment() {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to book appointment.');
+            // Log the response status and the response text for debugging
+            const errorData = await response.json();
+            console.error("Error response from server:", errorData);
+            throw new Error(errorData.message || 'Failed to book appointment.');
         }
 
         const data = await response.json();
         const appointmentId = data.appointment.appointmentId; // Get appointment ID
 
-        // Show QR code modal
         $('#qrCodeModal').modal('show');
         startPaymentTimer(appointmentId);
-
     } catch (error) {
         console.error("Error booking appointment:", error);
         alert("An error occurred while booking the appointment: " + error.message);
@@ -56,7 +53,7 @@ async function submitAppointment() {
 
 function startPaymentTimer(appointmentId) {
     let timer = 120; // 2 minutes
-    const timerDisplay = document.getElementById('timerDisplay'); // This ID needs to match the HTML
+    const timerDisplay = document.getElementById('timerDisplay');
 
     const interval = setInterval(async () => {
         timer -= 1;
@@ -64,7 +61,6 @@ function startPaymentTimer(appointmentId) {
         const seconds = timer % 60;
         timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-        // Check payment status every 5 seconds during the 120-second window
         if (timer % 5 === 0) {
             const paymentStatus = await checkPaymentStatus(appointmentId);
             if (paymentStatus === 'confirmed') {
@@ -88,7 +84,6 @@ function startPaymentTimer(appointmentId) {
     }, 1000);
 }
 
-
 async function checkPaymentStatus(appointmentId) {
     try {
         const response = await fetch(`/check-payment-status/${appointmentId}`);
@@ -106,8 +101,6 @@ async function checkPaymentStatus(appointmentId) {
     }
 }
 
-
-// Function to clear the form fields
 function clearForm() {
     document.getElementById('patientName').value = '';
     document.getElementById('phoneNumber').value = '';
@@ -116,7 +109,6 @@ function clearForm() {
     $('#appointmentTime').val(''); // Reset time picker
 }
 
-// Check availability function
 async function checkAvailability(doctorName, date, time) {
     try {
         const response = await fetch('/check-availability', {
@@ -133,8 +125,6 @@ async function checkAvailability(doctorName, date, time) {
         return false;
     }
 }
-
-// Use this function to trigger opening the modal from your button
 function onBookAppointmentClick(doctorName) {
     openBookingModal(doctorName);
 }

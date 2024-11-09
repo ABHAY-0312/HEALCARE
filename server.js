@@ -151,14 +151,71 @@ app.post('/submit-feedback', upload.single('image'), (req, res) => {
 // Check availability route
 app.post('/check-availability', (req, res) => {
     const { doctorName, date, time } = req.body;
+    const userEmail = req.session.user;  // Assuming user email is stored in session
 
+    // Log the inputs for debugging purposes
+    console.log(`Checking availability: doctorName=${doctorName}, date=${date}, time=${time}`);
+
+    // Check if the user already has an appointment at the requested time
+    const userAlreadyBooked = appointments[userEmail]?.some(
+        appointment => appointment.doctorName === doctorName && appointment.date === date && appointment.time === time
+    );
+
+    if (userAlreadyBooked) {
+        return res.json({
+            isAvailable: false,
+            message: 'Slot already booked for you on this date and time.'
+        });
+    }
+
+    // Check if the doctor has any appointments at the requested time
     const isAvailable = !appointments[doctorName] || 
         !appointments[doctorName].some(appointment => 
             appointment.date === date && appointment.time === time);
 
-    res.json({ isAvailable, message: isAvailable ? 'Slot available' : 'Slot already booked' });
+    if (!isAvailable) {
+        // Suggest 30 minutes later for the booking
+        const suggestedTime = add30Minutes(time);
+
+        console.log(`Suggested time: ${suggestedTime}`);
+
+        return res.json({
+            isAvailable: false,
+            message: `Time slot already booked for this doctor. You can try booking at ${suggestedTime}.`
+        });
+    }
+
+    return res.json({
+        isAvailable: true, 
+        message: 'Slot available'
+    });
 });
 
+// Function to add 30 minutes to a time string in HH:mm format
+function add30Minutes(time) {
+    const [hours, minutes] = time.split(":").map(Number);
+
+    // Add 30 minutes
+    let newMinutes = minutes + 30;
+    let newHours = hours;
+
+    // If minutes exceed 60, adjust the hour
+    if (newMinutes >= 60) {
+        newMinutes -= 60;
+        newHours++;
+    }
+
+    // Ensure hour is within 24-hour range
+    if (newHours >= 24) {
+        newHours = 0;
+    }
+
+    // Format hours and minutes as HH:mm
+    const formattedHours = newHours.toString().padStart(2, '0');
+    const formattedMinutes = newMinutes.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}`;
+}
 // Store pending payments for confirmation and timeout
 const pendingPayments = {};
 
@@ -167,30 +224,48 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-
-// Updated Book appointment route with payment status
+// Book appointment route with improved error checking
 app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     const { doctorName, patientName, date, time, phoneNumber } = req.body;
-    const userEmail = req.session.user;
+    const userEmail = req.session.user;  // Assuming user email is stored in session
 
+    console.log(`Booking appointment request: userEmail=${userEmail}, doctorName=${doctorName}, date=${date}, time=${time}`);
+
+    // Check if the user is logged in
     if (!userEmail) {
+        console.log("User not logged in");
         return res.status(403).json({ message: 'User not logged in' });
     }
 
+    // Validate required fields
     if (!doctorName || !patientName || !date || !time || !phoneNumber) {
+        console.log("Missing required fields");
         return res.status(400).json({ message: 'All fields are required' });
     }
 
+    // Check if user has already booked with the same doctor on the same date
     const hasBookedWithSameDoctorOnSameDay = appointments[userEmail]?.some(
         appointment => appointment.doctorName === doctorName && appointment.date === date
     );
 
     if (hasBookedWithSameDoctorOnSameDay) {
-        return res.status(400).json({ message: 'Only one appointment per doctor per day is allowed.' });
+        console.log("User already booked with the same doctor on this date");
+        return res.status(400).json({ message: 'Only one appointment with the same doctor is allowed on the same date.' });
     }
 
+ // Check if the user has already booked the same slot with the doctor
+ const userAlreadyBooked = appointments[userEmail]?.some(
+    appointment => appointment.doctorName === doctorName && appointment.date === date && appointment.time === time
+);
+
+if (userAlreadyBooked) {
+    console.log("User has already booked the slot for the same time");
+    return res.status(400).json({ message: 'Slot already booked for you on this date and time.' });
+}
+
+    // Check if the doctor already has an appointment at the same time
     const appointmentStart = new Date(`${date}T${time}`);
-    const appointmentEnd = new Date(appointmentStart.getTime() + 30 * 60000);
+    const appointmentEnd = new Date(appointmentStart.getTime() + 30 * 60000); // 30 minutes duration
 
     const isConflict = appointments[doctorName]?.some(appointment => {
         const existingStart = new Date(appointment.date + 'T' + appointment.time);
@@ -199,17 +274,27 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     });
 
     if (isConflict) {
-        return res.status(400).json({ message: 'Time slot already booked.' });
+        console.log("Time conflict with another appointment");
+        // Suggest 30 minutes later for the booking
+        const suggestedTime = new Date(appointmentStart.getTime() + 30 * 60000); // Add 30 minutes
+    
+        const suggestedTimeStr = suggestedTime.toISOString().slice(11, 16); // Format as HH:mm
+        return res.status(400).json({ message: `Time slot already booked for this doctor. You can try booking at ${suggestedTimeStr}.` });
     }
 
-    if (appointments[doctorName]?.filter(appt => appt.date === date).length >= 3) {
-        return res.status(400).json({ message: 'Doctor reached appointment limit for the day.' });
+    // Ensure the doctor has not exceeded the daily limit (3 appointments per day)
+    if (appointments[doctorName]?.filter(appt => appt.date === date).length >= 2) {
+        console.log("Doctor reached daily limit");
+        return res.status(400).json({ message: 'Doctor has already reached the daily limit for appointments.' });
     }
 
+    // Check if the appointment time is in the future (not in the past)
     if (appointmentStart < new Date()) {
-        return res.status(400).json({ message: 'Cannot book in the past.' });
+        console.log("Appointment time is in the past");
+        return res.status(400).json({ message: 'Cannot book appointments in the past.' });
     }
 
+    // Assign a unique appointment ID and prepare the new appointment object
     const appointmentId = `${userEmail}-${Date.now()}`;
     const newAppointment = {
         appointmentId,
@@ -218,48 +303,45 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
         date,
         time,
         phoneNumber,
-        medicalReport: req.file ? req.file.filename : null
+        medicalReport: req.file ? req.file.filename : null,
+        
     };
 
-    if (!appointments[userEmail]) appointments[userEmail] = [];
-    if (!appointments[doctorName]) appointments[doctorName] = [];
-
-    appointments[userEmail].push(newAppointment);
-    appointments[doctorName].push(newAppointment);
-
-    // Add payment status with 2-minute timer
+    // Add the new appointment to the pending payments list
     pendingPayments[appointmentId] = { confirmed: false, expired: false };
 
-    setTimeout(() => {
-        // Simulate payment confirmation after 2 minutes
-        // Automatically set the payment as confirmed or expired
-        if (!pendingPayments[appointmentId].confirmed) {
-            pendingPayments[appointmentId].expired = true;
-            console.log(`Payment expired for appointment: ${appointmentId}`);
-            // You can also notify the frontend about the expired payment status
-        }
-    }, 120000); // 2 minutes
+    // Respond with payment pending message
+    res.status(201).json({ message: 'Please proceed with payment.', appointment: newAppointment });
 
-    console.log('New Appointment Booked:', newAppointment);
+    // Log the new appointment
+    console.log('Appointment booked (pending):', newAppointment);
 
-    // Now, ask for payment confirmation in the terminal (y/n)
-    console.log(`Appointment booked! Please confirm payment for appointment ID: ${appointmentId}`);
-    rl.question('Press "y" for payment received or "n" to decline: ', (input) => {
+    // Ask for payment confirmation in the terminal (y/n)
+    rl.question(`Appointment booked! Please confirm payment for appointment ID: ${appointmentId}. Press "y" for payment received or "n" to decline: `, (input) => {
         if (input.toLowerCase() === 'y') {
+            // Confirm payment and finalize the appointment
             pendingPayments[appointmentId].confirmed = true;
+            newAppointment.status = 'confirmed'; // Mark as confirmed
+
+            // Add appointment to both the user's and doctor's list of confirmed appointments
+            if (!appointments[userEmail]) appointments[userEmail] = [];
+            if (!appointments[doctorName]) appointments[doctorName] = [];
+
+            appointments[userEmail].push(newAppointment);
+            appointments[doctorName].push(newAppointment);
+
             console.log(`Payment received for appointment: ${appointmentId}`);
         } else if (input.toLowerCase() === 'n') {
+            // Decline payment and remove the pending appointment
             pendingPayments[appointmentId].expired = true;
+            newAppointment.status = 'expired'; // Mark as expired
             console.log(`Payment declined for appointment: ${appointmentId}`);
         } else {
             console.log('Invalid input. Please press "y" or "n".');
         }
     });
 
-    // Respond with payment pending message
-    res.status(201).json({ message: 'Please proceed with payment.', appointment: newAppointment });
 });
-
 
 // Route to confirm payment (new endpoint)
 app.post('/confirm-payment', (req, res) => {

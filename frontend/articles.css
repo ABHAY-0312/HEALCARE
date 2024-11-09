@@ -3,8 +3,6 @@ html, body {
     margin: 0;
 }
 body {
-    display: flex;
-    flex-direction: column;
     font-family: 'Arial', sans-serif;
 }
 .navbar-brand img {
@@ -14,19 +12,23 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: scale(1.05);
 }
 .card img {
     border-radius: 10px;
-    max-height: 200px; /* Ensures all images have the same max height */
-    object-fit: cover; /* Maintains aspect ratio without distortion */
+    max-height: 200px;
+    object-fit: cover;
 }
 .card-body {
-    flex-grow: 1; /* This allows the card body to take up remaining space */
+    flex-grow: 1;
 }
 .footer {
     background-color: #f8d7da;
     padding: 20px 0;
-    margin-top: auto; /* This pushes the footer to the bottom */
+    margin-top: auto;
 }
 .footer a {
     color: #000;
@@ -37,4 +39,11 @@ body {
 }
 .content-section {
     margin-bottom: 50px;
+}
+.pagination .page-link {
+    color: #007bff;
+}
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: white;
 }
