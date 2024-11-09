@@ -8,6 +8,7 @@ const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const readline = require('readline');
 
 const app = express();
 const PORT = 3000;
@@ -129,6 +130,7 @@ app.delete('/api/health-records', (req, res) => {
     healthRecords[userEmail] = [];
     res.status(200).json({ message: 'All records cleared successfully!' });
 });
+
 // Feedback submission route
 app.post('/submit-feedback', upload.single('image'), (req, res) => {
     const { name, phone, email, issue, title, feedback, rating } = req.body;
@@ -157,7 +159,16 @@ app.post('/check-availability', (req, res) => {
     res.json({ isAvailable, message: isAvailable ? 'Slot available' : 'Slot already booked' });
 });
 
-// Book appointment route
+// Store pending payments for confirmation and timeout
+const pendingPayments = {};
+
+// Create readline interface for terminal input
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+// Updated Book appointment route with payment status
 app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     const { doctorName, patientName, date, time, phoneNumber } = req.body;
     const userEmail = req.session.user;
@@ -216,10 +227,95 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     appointments[userEmail].push(newAppointment);
     appointments[doctorName].push(newAppointment);
 
+    // Add payment status with 2-minute timer
+    pendingPayments[appointmentId] = { confirmed: false, expired: false };
+
+    setTimeout(() => {
+        // Simulate payment confirmation after 2 minutes
+        // Automatically set the payment as confirmed or expired
+        if (!pendingPayments[appointmentId].confirmed) {
+            pendingPayments[appointmentId].expired = true;
+            console.log(`Payment expired for appointment: ${appointmentId}`);
+            // You can also notify the frontend about the expired payment status
+        }
+    }, 120000); // 2 minutes
+
     console.log('New Appointment Booked:', newAppointment);
-    
-    // Respond with success message
-    res.status(201).json({ message: 'Appointment booked successfully!', appointment: newAppointment });
+
+    // Now, ask for payment confirmation in the terminal (y/n)
+    console.log(`Appointment booked! Please confirm payment for appointment ID: ${appointmentId}`);
+    rl.question('Press "y" for payment received or "n" to decline: ', (input) => {
+        if (input.toLowerCase() === 'y') {
+            pendingPayments[appointmentId].confirmed = true;
+            console.log(`Payment received for appointment: ${appointmentId}`);
+        } else if (input.toLowerCase() === 'n') {
+            pendingPayments[appointmentId].expired = true;
+            console.log(`Payment declined for appointment: ${appointmentId}`);
+        } else {
+            console.log('Invalid input. Please press "y" or "n".');
+        }
+    });
+
+    // Respond with payment pending message
+    res.status(201).json({ message: 'Please proceed with payment.', appointment: newAppointment });
+});
+
+
+// Route to confirm payment (new endpoint)
+app.post('/confirm-payment', (req, res) => {
+    const { appointmentId, paymentStatus } = req.body;
+
+    if (!appointmentId || !paymentStatus) {
+        return res.status(400).json({ message: 'Appointment ID and payment status are required' });
+    }
+
+    const paymentStatusObj = pendingPayments[appointmentId];
+
+    if (!paymentStatusObj) {
+        return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    if (paymentStatus === 'confirmed') {
+        paymentStatusObj.confirmed = true;
+        return res.json({ message: `Payment confirmed for appointment: ${appointmentId}` });
+    } else if (paymentStatus === 'expired') {
+        paymentStatusObj.expired = true;
+        return res.json({ message: `Payment expired for appointment: ${appointmentId}` });
+    } else {
+        return res.status(400).json({ message: 'Invalid payment status' });
+    }
+});
+
+// Route to check payment status
+app.get('/check-payment-status/:appointmentId', (req, res) => {
+    const appointmentId = req.params.appointmentId;
+    const paymentStatus = pendingPayments[appointmentId];
+
+    if (!paymentStatus) {
+        return res.status(404).json({ message: 'No payment found' });
+    }
+
+    if (paymentStatus.expired) {
+        res.json({ status: 'expired', message: 'Payment expired' });
+    } else if (paymentStatus.confirmed) {
+        res.json({ status: 'confirmed', message: 'Payment confirmed' });
+    } else {
+        res.json({ status: 'pending', message: 'Payment pending' });
+    }
+});
+
+// Terminal input for payment confirmation
+rl.on('line', (input) => {
+    const [appointmentId, response] = input.split(" ");
+    if (pendingPayments[appointmentId]) {
+        if (response === 'y') {
+            pendingPayments[appointmentId].confirmed = true;
+            console.log(`Payment received for appointment: ${appointmentId}`);
+        } else if (response === 'n') {
+            pendingPayments[appointmentId].expired = true;
+            console.log(`Payment declined for appointment: ${appointmentId}`);
+        }
+    }
 });
 
 // Start server
