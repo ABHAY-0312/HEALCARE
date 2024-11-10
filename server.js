@@ -20,7 +20,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploads folder statically
-app.use(session({ secret: 'secret-key', resave: false, saveUninitialized: true }));
+app.use(session({
+    secret: 'secret-key',
+    resave: false,  // Do not save session if unmodified
+    saveUninitialized: false,  // Do not create session if nothing is stored
+    cookie: {
+      secure: false,  // Set to `true` if you're using HTTPS
+      httpOnly: true,  // Prevent client-side JavaScript from accessing the cookie
+      sameSite: 'strict',  // Strictly restricts cookies to same-site requests
+      maxAge: 24 * 60 * 60 * 1000  // Set session expiration time (24 hours)
+    }
+  }));
+  
 
 // Initialize Google Generative AI with Gemini API Key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -242,7 +253,10 @@ app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
         console.log("Missing required fields");
         return res.status(400).json({ message: 'All fields are required' });
     }
-
+   // Ensure the user's appointments are stored separately by email
+   if (!appointments[userEmail]) {
+    appointments[userEmail] = [];  // Initialize an empty array for the user's appointments
+}
     // Check if user has already booked with the same doctor on the same date
     const hasBookedWithSameDoctorOnSameDay = appointments[userEmail]?.some(
         appointment => appointment.doctorName === doctorName && appointment.date === date
@@ -306,6 +320,8 @@ if (userAlreadyBooked) {
         medicalReport: req.file ? req.file.filename : null,
         
     };
+     // Add the new appointment to the user's list of appointments
+     appointments[userEmail].push(newAppointment);
 
     // Add the new appointment to the pending payments list
     pendingPayments[appointmentId] = { confirmed: false, expired: false };

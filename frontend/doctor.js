@@ -78,7 +78,7 @@ function startPaymentTimer(appointmentId) {
 
         if (timer <= 0) {
             clearInterval(interval);
-            alert("Payment failed. The money has been refunded.");
+            alert("Payment failed. The money has been refunded if debited from account.");
             $('#qrCodeModal').modal('hide');
         }
     }, 1000);
