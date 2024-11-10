@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealCare Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="articles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img alt="WellnessHub Logo" height="30" src="./image/logo.png" width="30"/>
+                HealCare Hub
+            </a>
+            <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Article List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Article Detail</a></li>
+                </ul>
+                <form class="d-flex ms-3">
+                    <input class="form-control me-2" placeholder="Search articles..." type="search"/>
+                    <button class="btn btn-danger" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 content-section">
+        <h1 class="text-center">Welcome to HealCare Hub</h1>
+        <p class="text-center">Explore a world of health and wellness articles tailored to your interests.</p>
+          <!-- Add spacing between sections -->
+    <div style="height: 40px;"></div> <!-- Add extra space here -->
+        <div class="row mt-4">
+            <!-- Article 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img alt="People practicing yoga" class="card-img-top" src="./image/exercise.webp">
+                    <div class="card-body">
+                        <h5 class="card-title">Yoga & Meditation</h5>
+                        <p class="card-text" id="article1-preview">Discover the benefits of yoga and meditation for mental and physical health. Yoga helps improve flexibility, balance, and mindfulness while meditation enhances mental clarity and reduces stress...</p>
+                        <a class="btn btn-primary" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#article1-content">Read More</a>
+                        <div id="article1-content" class="collapse mt-3">
+                            <p class="card-text">Yoga and meditation have been practiced for thousands of years, originating from India. These practices offer numerous health benefits, including stress reduction, improved sleep quality, and enhanced focus. Both activities contribute to emotional and physical well-being. Yoga also provides therapeutic effects, helping with chronic pain management, boosting immune function, and improving posture...</p>
+                            <p class="card-text">Incorporating both practices into your routine can also improve your ability to manage anxiety, depression, and overall mental health. Whether you are a beginner or experienced practitioner, yoga and meditation provide tools for navigating life's challenges with a greater sense of calm and awareness.</p>
+                            <p class="card-text">The benefits are not just physical, but mental and emotional as well, offering holistic healing to practitioners. Both can be done in various environments, whether at home, in a studio, or outdoors, making it accessible for everyone, regardless of age or fitness level.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img alt="Assorted healthy fruits and vegetables" class="card-img-top" src="./image/healthy.jpg">
+                    <div class="card-body">
+                        <h5 class="card-title">Healthy Eating</h5>
+                        <p class="card-text" id="article2-preview">Learn about nutritious diets and recipes to maintain a balanced lifestyle. Healthy eating is crucial for weight management, disease prevention, and overall vitality...</p>
+                        <a class="btn btn-primary" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#article2-content">Read More</a>
+                        <div id="article2-content" class="collapse mt-3">
+                            <p class="card-text">A balanced diet consists of a variety of foods that provide the nutrients the body needs to function properly. This includes proteins, carbohydrates, fats, vitamins, and minerals. Focusing on whole foods, such as fruits, vegetables, and lean proteins, is key to maintaining good health. By incorporating more plant-based foods into your meals, you can improve digestion, boost energy levels, and reduce your risk of chronic diseases such as heart disease, diabetes, and obesity...</p>
+                            <p class="card-text">Healthy eating goes beyond just consuming nutrient-rich foods; it also involves developing mindful eating habits, such as portion control, avoiding overeating, and eating in a way that promotes mental clarity and overall wellness. Understanding the importance of proper hydration, as well as choosing foods that provide long-lasting energy throughout the day, are also crucial components of a healthy diet.</p>
+                            <p class="card-text">When planning meals, aim to include a variety of colors and textures on your plate, ensuring that you're getting a broad spectrum of vitamins and minerals. Whether you're following a specific diet, such as vegetarian, vegan, or keto, or simply looking to improve your general nutrition, there are many ways to make healthy eating an enjoyable and sustainable lifestyle choice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img alt="Person jogging in a park" class="card-img-top" src="https://storage.googleapis.com/a1aa/image/BlmNvTS3G0YfACENH4z0iqSBzqHKXzlbNgcbUof0YRCOXCrTA.jpg">
+                    <div class="card-body">
+                        <h5 class="card-title">Fitness & Exercise</h5>
+                        <p class="card-text" id="article3-preview">Explore effective workout plans and tips for staying active. Regular exercise is essential for maintaining physical health and mental well-being...</p>
+                        <a class="btn btn-primary" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#article3-content">Read More</a>
+                        <div id="article3-content" class="collapse mt-3">
+                            <p class="card-text">Fitness is not just about looking good; it's about feeling great. A well-rounded fitness routine includes cardiovascular exercises, strength training, flexibility, and balance work. Consistency is key to achieving long-term health benefits. Whether you're looking to build muscle, lose weight, or improve your overall fitness, exercise can be tailored to your specific goals. Cardio exercises, such as running, cycling, or swimming, are excellent for improving heart health, while strength training helps build lean muscle mass...</p>
+                            <p class="card-text">Stretching and flexibility exercises, such as yoga or Pilates, are equally important in preventing injuries and improving mobility. Strengthening your core muscles can also help alleviate back pain and improve posture. Additionally, incorporating balance exercises into your routine can help prevent falls and enhance coordination.</p>
+                            <p class="card-text">Exercise also plays a significant role in mental health. Regular physical activity boosts the release of endorphins, which are the body’s natural mood elevators. Whether you're a beginner or an experienced athlete, there are many ways to get active and stay motivated. It's important to start slow, listen to your body, and gradually increase intensity as you build strength and endurance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <footer class="footer bg-light mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Contact Us</h5>
+                    <p>Email: support@healcarehub.com</p>
+                    <p>Phone: +1 234 567 890</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5>Follow Us</h5>
+                    <a class="me-2" href="https://www.facebook.com/login/"><i class="fab fa-facebook-f"></i></a>
+                    <a class="me-2" href="https://x.com/i/flow/login"><i class="fab fa-twitter"></i></a>
+                    <a class="me-2" href="https://www.instagram.com/accounts/login/"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="col-md-4 text-end">
+                    <h5>Quick Links</h5>
+                    <a href="Aboutus.html">About Us</a><br/>
+                    <a href="privacy.html">Privacy Policy</a><br/>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

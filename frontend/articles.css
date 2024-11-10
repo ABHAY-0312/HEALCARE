@@ -1,0 +1,49 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    font-family: 'Arial', sans-serif;
+}
+.navbar-brand img {
+    height: 30px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.card img {
+    border-radius: 10px;
+    max-height: 200px;
+    object-fit: cover;
+}
+.card-body {
+    flex-grow: 1;
+}
+.footer {
+    background-color: #f8d7da;
+    padding: 20px 0;
+    margin-top: auto;
+}
+.footer a {
+    color: #000;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.content-section {
+    margin-bottom: 50px;
+}
+.pagination .page-link {
+    color: #007bff;
+}
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: white;
+}

@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: url('./image/backgroundlogin.jpg') no-repeat center center fixed; 
+    background-size: cover; 
+    height: 100vh; 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    overflow: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px; /* Adjusted padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    z-index: 99;
+}
+
+.logo {
+    font-size: 2em;
+    color: #fff;
+}
+
+.navigation {
+    display: flex;
+    flex-wrap: wrap; 
+    /* Allow navigation links to wrap */
+}
+
+.navigation a {
+    position: relative;
+    font-size: 1.1rem; /* Use rem for better scalability */
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px; /* Adjust margin */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+    padding: 8px 12px; /* Padding for a more interactive effect */
+    border-radius: 5px; /* Rounded edges */
+}
+
+.navigation a:hover {
+    color: #162938; /* Darker color on hover */
+    background-color: rgba(255, 255, 255, 0.7); /* Slight background color change */
+}
+
+
+.navigation .btnLogin {
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-left: 20px; /* Adjust margin */
+    transition: 0.5s;
+}
+
+.navigation .btnLogin:hover {
+    background: #fff;
+    color: #162938;
+}
+
+.main {
+    max-width: 400px; /* Maximum width for the main container */
+    width: 100%; /* Allow full width on smaller screens */
+    height: auto; 
+    max-height: 80%; 
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 30px 20px; /* Adjusted padding */
+    overflow-y: auto; 
+}
+
+h1 {
+    font-size: 2rem; /* Responsive font size */
+    text-align: center;
+}
+
+.main .input1 {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input1 input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #1c1c1c;
+    padding: 20px 45px 20px 20px;
+}
+
+.input1 input::placeholder {
+    color: #1c1c1c;
+    font-weight: 500;
+}
+
+.input1 i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #1c1c1c;
+}
+
+.main .remember {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+   
+}
+
+.main .btn {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background: #162938;
+    color: #fff;
+}
+.remember {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+.forgot-password {
+    margin-left: 10px; /* Adjust the value as needed for spacing */
+}
+
+
+@media (max-width: 768px) {
+    header {
+        padding: 20px 30px;
+    }
+
+    .navigation a {
+        font-size: 0.9em;
+        margin-left: 15px;
+    }
+
+    .navigation .btnLogin {
+        width: 90px;
+        height: 35px;
+        font-size: 0.9em;
+    }
+
+    .main {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem; /* Adjusted for responsiveness */
+    }
+
+    .input1 input {
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .btn {
+        height: 40px; /* Adjust button height */
+    }
+}
