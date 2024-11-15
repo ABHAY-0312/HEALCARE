@@ -6,7 +6,7 @@ async function test() {
 
     if (!termsCheckbox.checked) {
         alert("You must agree to the terms and conditions to register.");
-        return; // Prevent form submission if checkbox is not checked
+        return; 
     }
 
     try {
@@ -19,7 +19,7 @@ async function test() {
         const result = await response.json();
         if (response.ok) {
             alert(result.message);
-            location.href = 'index.html'; // Redirect to login page on successful registration
+            location.href = 'index.html'; 
         } else {
             alert(result.message);
         }

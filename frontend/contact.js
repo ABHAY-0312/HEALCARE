@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const hearts = document.querySelectorAll('.rating i');
     let selectedRating = 0;
 
-    // Heart rating selection
     hearts.forEach(heart => {
         heart.addEventListener('click', function() {
             selectedRating = this.getAttribute('data-value');
@@ -16,12 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submission
     document.getElementById('feedback-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const formData = new FormData(this);
-        formData.append('rating', selectedRating); // Append rating to formData
+        formData.append('rating', selectedRating);
 
         try {
             const response = await fetch('/submit-feedback', {
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             const result = await response.json();
-            alert(result.message); // Alert message from server response
+            alert(result.message);
         } catch (error) {
             alert("Error submitting feedback. Please try again.");
             console.error("Submit Feedback Error:", error);

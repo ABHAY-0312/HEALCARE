@@ -12,7 +12,7 @@ async function test1() {
         const result = await response.json();
         if (response.ok) {
             alert(result.message);
-            location.href = 'main.html'; // Redirect to main page on successful login
+            location.href = 'main.html'; 
         } else {
             alert(result.message);
         }

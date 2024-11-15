@@ -25,7 +25,7 @@ async function submitAppointment() {
     appointmentDetails.append('medicalReports', medicalReports);
 
     const isAvailable = await checkAvailability(doctorName, appointmentDate, appointmentTime);
-    if (!isAvailable) return;  // If slot unavailable, show message and return early
+    if (!isAvailable) return;
     
     try {
         const response = await fetch('/book-appointment', {
@@ -34,14 +34,13 @@ async function submitAppointment() {
         });
 
         if (!response.ok) {
-            // Log the response status and the response text for debugging
             const errorData = await response.json();
             console.error("Error response from server:", errorData);
             throw new Error(errorData.message || 'Failed to book appointment.');
         }
 
         const data = await response.json();
-        const appointmentId = data.appointment.appointmentId; // Get appointment ID
+        const appointmentId = data.appointment.appointmentId;
 
         $('#qrCodeModal').modal('show');
         startPaymentTimer(appointmentId);
@@ -52,7 +51,7 @@ async function submitAppointment() {
 }
 
 function startPaymentTimer(appointmentId) {
-    let timer = 120; // 2 minutes
+    let timer = 120;
     const timerDisplay = document.getElementById('timerDisplay');
 
     const interval = setInterval(async () => {
@@ -70,7 +69,7 @@ function startPaymentTimer(appointmentId) {
                 return;
             } else if (paymentStatus === 'expired') {
                 clearInterval(interval);
-                alert("Payment failed. The money has been refunded.");
+                alert("Payment failed. The money has been refunded if debited from the account.");
                 $('#qrCodeModal').modal('hide');
                 return;
             }
@@ -78,7 +77,7 @@ function startPaymentTimer(appointmentId) {
 
         if (timer <= 0) {
             clearInterval(interval);
-            alert("Payment failed. The money has been refunded if debited from account.");
+            alert("Payment failed. The money has been refunded if debited from the account.");
             $('#qrCodeModal').modal('hide');
         }
     }, 1000);
@@ -94,19 +93,19 @@ async function checkPaymentStatus(appointmentId) {
         } else if (data.status === 'expired') {
             return 'expired';
         }
-        return 'pending'; // If payment is still pending
+        return 'pending';
     } catch (error) {
         console.error("Error checking payment status:", error);
-        return 'pending'; // Default to pending if there's an issue
+        return 'pending';
     }
 }
 
 function clearForm() {
     document.getElementById('patientName').value = '';
     document.getElementById('phoneNumber').value = '';
-    document.getElementById('medicalReports').value = ''; // Reset file input
-    $('#appointmentDate').val(''); // Reset date picker
-    $('#appointmentTime').val(''); // Reset time picker
+    document.getElementById('medicalReports').value = '';
+    $('#appointmentDate').val('');
+    $('#appointmentTime').val('');
 }
 
 async function checkAvailability(doctorName, date, time) {
@@ -118,13 +117,14 @@ async function checkAvailability(doctorName, date, time) {
         });
 
         const data = await response.json();
-        alert(data.message); // Inform user of availability
-        return data.isAvailable; // Return the actual availability status
+        alert(data.message);
+        return data.isAvailable;
     } catch (error) {
         alert("Error checking availability: " + error.message);
         return false;
     }
 }
+
 function onBookAppointmentClick(doctorName) {
     openBookingModal(doctorName);
 }

@@ -1,9 +1,8 @@
-/* General Styles */
 body {
     font-family: 'Arial', sans-serif;
-    padding-top: 70px; /* Ensure navbar doesn't overlap */
+    padding-top: 70px;
 }
-/* Navbar Links Hover Effect */
+
 .navbar-nav .nav-item {
     position: relative;
 }
@@ -17,13 +16,12 @@ body {
 }
 
 .navbar-nav .nav-link:hover {
-    color: #fff; /* Change text color on hover */
-    background-color: #007bff; /* Background color on hover */
+    color: #fff;
+    background-color: #007bff;
     border-radius: 5px;
-    transform: scale(1.1); /* Slightly grow the link */
+    transform: scale(1.1);
 }
 
-/* Add an underline effect on hover */
 .navbar-nav .nav-link:after {
     content: "";
     position: absolute;
@@ -42,22 +40,19 @@ body {
     transform-origin: bottom left;
 }
 
-
-/* Hero Section */
 .hero-section {
     background: linear-gradient(45deg, #007bff, #6f42c1);
     color: white;
     padding: 60px 0;
 }
 
-/* Services Section */
 .card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Faster transition */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-    transform: translateY(-10px); /* Slightly faster hover effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow effect */
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .card-img-top {
@@ -70,7 +65,6 @@ body {
     padding: 20px;
 }
 
-/* Reviews Section */
 .review-slider {
     position: relative;
     max-width: 800px;
@@ -96,7 +90,6 @@ body {
     text-align: center;
 }
 
-/* Review Text */
 .card-title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -107,7 +100,6 @@ body {
     color: #555;
 }
 
-/* Navigation Buttons */
 .slider-nav {
     position: absolute;
     top: 50%;
@@ -129,4 +121,3 @@ body {
 .prev-btn:hover, .next-btn:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }
-

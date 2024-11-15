@@ -34,11 +34,10 @@ body {
     border-radius: 10px;
     margin-top: 50px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* Added responsiveness */
     width: 100%;
-    max-width: 600px; /* Max width for larger screens */
+    max-width: 600px;
     margin-left: auto;
-    margin-right: auto; /* Center the form */
+    margin-right: auto;
 }
 
 .footer {
@@ -65,27 +64,26 @@ body {
     color: #ff0000;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
     .feedback-form {
-        padding: 15px; /* Adjust padding for smaller screens */
+        padding: 15px;
     }
 
     .footer {
-        padding: 15px 0; /* Adjust footer padding */
+        padding: 15px 0;
     }
 }
 
 @media (max-width: 576px) {
     .navbar {
-        text-align: center; /* Center align navbar items on small screens */
+        text-align: center;
     }
 
     .navbar-nav {
-        margin-bottom: 10px; /* Space between navbar and content */
+        margin-bottom: 10px;
     }
 
     .feedback-form {
-        margin-top: 30px; /* Adjust margin for smaller screens */
+        margin-top: 30px;
     }
 }

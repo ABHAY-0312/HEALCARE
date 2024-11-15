@@ -4,23 +4,22 @@ body {
 }
 .navbar {
     background-color: #ffffff;
-    transition: box-shadow 0.3s ease; /* Smooth transition for box shadow */
+    transition: box-shadow 0.3s ease;
 }
 
-/* Navbar shadow on hover */
 .navbar:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as desired */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .navbar-brand {
     font-weight: bold;
 }
 .nav-link {
     margin-right: 20px;
-    color: #00416d; /* Original color */
-    transition: color 0.3s ease; /* Smooth color transition */
+    color: #00416d;
+    transition: color 0.3s ease;
 }
 .nav-link:hover {
-    color: #007bff; /* Change to your desired color on hover */
+    color: #007bff;
 }
 .form-container {
     background-color: #fff;
@@ -49,7 +48,7 @@ body {
     transition: background-color 0.3s;
 }
 .btn-submit:hover {
-    background-color: #444; /* Darker shade on hover */
+    background-color: #444;
 }
 .footer {
     text-align: center;

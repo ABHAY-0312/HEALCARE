@@ -6,12 +6,10 @@
     <title>HealCareHub</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="main.css">
-    <!-- Bootstrap Icons (Optional for social media icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -48,7 +46,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero text-center">
         <div class="container">
             <h1 class="display-4">Welcome to HealCareHub</h1>
@@ -57,10 +54,7 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <!-- Features Section -->
-<!-- Features Section -->
-<section class="features py-5">
+    <section class="features py-5">
     <div class="container">
         <div class="row text-center">
             <div class="col-md-4">
@@ -88,8 +82,6 @@
     </div>
 </section>
 
-
-    <!-- Footer -->
     <footer class="bg-light py-4">
         <div class="container text-center">
             <div class="row">
@@ -113,7 +105,7 @@
                 <div class="col-md-4">
                     <h5>Newsletter</h5>
                     <p>Subscribe to our newsletter for the latest updates and health tips.</p>
-                    <form action="">
+                    <form action=""></form>
                         <input type="email" class="form-control mb-2" placeholder="Enter your email">
                         <button class="btn btn-primary">Subscribe</button>
                     </form>
@@ -122,17 +114,14 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function setActive(element) {
-            // Remove active class from all feature boxes
             const boxes = document.querySelectorAll('.feature-box');
             boxes.forEach(box => {
                 box.classList.remove('active');
             });
         
-            // Add active class to the clicked box
             element.classList.add('active');
         }
         </script>

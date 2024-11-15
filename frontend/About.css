@@ -1,4 +1,3 @@
-/* Global Styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +5,6 @@
     font-family: "Arial", sans-serif;
 }
 
-/* Hero Section */
 .hero {
     background-color: #f8f8f8;
     overflow: hidden;
@@ -72,7 +70,6 @@ img {
     border-radius: 10px;
 }
 
-/* Reviews Section */
 .reviews {
     background-color: #f0f0f0;
     padding: 40px;
@@ -111,7 +108,7 @@ img {
     transition: transform 0.3s ease;
 }
 .review img:hover {
-    transform: rotate(5deg); /* Optional slight rotation effect */
+    transform: rotate(5deg);
 }
 .review p {
     font-size: 18px;
@@ -131,7 +128,6 @@ img {
     color: #ff6347;
 }
 
-/* Footer Section */
 .footer {
     background-color: #333;
     color: #fff;
@@ -153,7 +149,6 @@ img {
     color: #ff4500;
 }
 
-/* Animations */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -175,7 +170,6 @@ img {
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

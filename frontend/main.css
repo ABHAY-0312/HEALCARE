@@ -1,10 +1,8 @@
-/* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f9f9f9;
 }
 
-/* Navbar */
 .navbar {
     background-color: #ffffff;
 }
@@ -29,22 +27,22 @@ body {
 .nav-link:hover {
     color: #00416d;
 }
-/* Navbar Hover Effect */
+
 .navbar .nav-link {
     font-size: 1rem;
     color: #00416d;
     padding: 10px 20px;
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .navbar .nav-link:hover {
-    background-color: #e0f7fa; /* Light teal background color on hover */
-    color: #007bff; /* Change text color on hover */
+    background-color: #e0f7fa;
+    color: #007bff;
+    background-color: #e0f7fa;
+    color: #007bff;
 }
 
-
-/* Hero Section */
 .hero {
     background-color: #f0f8ff;
     padding: 80px 0;
@@ -71,46 +69,37 @@ body {
     margin-top: 20px;
 }
 
-/* Features Section */
-/* Features Section */
-/* Features Section */
-/* Features Section */
 .features {
     background-color: #f9f9f9;
-    padding-bottom: 80px; /* Add more padding to create space */
+    padding-bottom: 80px;
 }
 
-/* Footer */
 footer {
     background-color: #ffffff;
     padding: 40px 0;
-    margin-top: 50px; /* Adds distance between footer and the previous section */
+    margin-top: 50px;
     color: #333;
 }
 
-
 .feature-box {
-    background-color: #ffffff; /* Common background color for all feature boxes */
+    background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 30px;
     transition: all 0.3s ease;
     height: 100%;
-    cursor: pointer; /* Change cursor to pointer */
+    cursor: pointer;
 }
 
-/* Hover Effect */
 .feature-box:hover {
     transform: translateY(-10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    background-color: #e9ecef; /* Light gray for hover */
+    background-color: #e9ecef;
 }
 
-/* Active State */
 .feature-box.active {
-    background-color: #d1e7dd; /* Change color on click */
+    background-color: #d1e7dd;
 }
-
 
 .feature-box img {
     max-height: 150px;
@@ -128,15 +117,6 @@ footer {
 .feature-box p {
     color: #555;
     margin-top: 10px;
-}
-
-
-/* Footer */
-footer {
-    background-color: #ffffff;
-    padding: 40px 0;
-    margin-top: 50px; /* Adds distance between footer and the previous section */
-    color: #333;
 }
 
 footer h5 {
@@ -179,7 +159,6 @@ footer form button {
     border-radius: 5px;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.2rem;

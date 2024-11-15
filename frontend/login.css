@@ -23,11 +23,11 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 10px 20px; /* Adjusted padding */
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    flex-wrap: wrap;
     z-index: 99;
 }
 
@@ -38,26 +38,24 @@ header {
 
 .navigation {
     display: flex;
-    flex-wrap: wrap; 
-    /* Allow navigation links to wrap */
+    flex-wrap: wrap;
 }
 
 .navigation a {
     position: relative;
-    font-size: 1.1rem; /* Use rem for better scalability */
+    font-size: 1.1rem;
     color: #fff;
     text-decoration: none;
-    margin-left: 20px; /* Adjust margin */
-    transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
-    padding: 8px 12px; /* Padding for a more interactive effect */
-    border-radius: 5px; /* Rounded edges */
+    margin-left: 20px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 5px;
 }
 
 .navigation a:hover {
-    color: #162938; /* Darker color on hover */
-    background-color: rgba(255, 255, 255, 0.7); /* Slight background color change */
+    color: #162938;
+    background-color: rgba(255, 255, 255, 0.7);
 }
-
 
 .navigation .btnLogin {
     width: 130px;
@@ -70,7 +68,7 @@ header {
     color: #fff;
     font-size: 1.1em;
     font-weight: 500;
-    margin-left: 20px; /* Adjust margin */
+    margin-left: 20px;
     transition: 0.5s;
 }
 
@@ -80,8 +78,8 @@ header {
 }
 
 .main {
-    max-width: 400px; /* Maximum width for the main container */
-    width: 100%; /* Allow full width on smaller screens */
+    max-width: 400px;
+    width: 100%;
     height: auto; 
     max-height: 80%; 
     border-radius: 10px;
@@ -94,12 +92,12 @@ header {
     flex-direction: column; 
     justify-content: center; 
     align-items: center; 
-    padding: 30px 20px; /* Adjusted padding */
+    padding: 30px 20px;
     overflow-y: auto; 
 }
 
 h1 {
-    font-size: 2rem; /* Responsive font size */
+    font-size: 2rem;
     text-align: center;
 }
 
@@ -144,7 +142,6 @@ h1 {
     margin: -15px 0 15px;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-   
 }
 
 .main .btn {
@@ -166,6 +163,7 @@ h1 {
     background: #162938;
     color: #fff;
 }
+
 .remember {
     display: flex;
     justify-content: space-between;
@@ -176,9 +174,8 @@ h1 {
 }
 
 .forgot-password {
-    margin-left: 10px; /* Adjust the value as needed for spacing */
+    margin-left: 10px;
 }
-
 
 @media (max-width: 768px) {
     header {
@@ -202,14 +199,14 @@ h1 {
     }
 
     h1 {
-        font-size: 1.8rem; /* Adjusted for responsiveness */
+        font-size: 1.8rem;
     }
 
     .input1 input {
-        font-size: 14px; /* Adjust font size */
+        font-size: 14px;
     }
 
     .btn {
-        height: 40px; /* Adjust button height */
+        height: 40px;
     }
 }

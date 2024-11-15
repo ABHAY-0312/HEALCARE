@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadRecordsButton = document.getElementById('loadRecords');
     const clearRecordsButton = document.getElementById('clearRecords');
 
-    // Submit health record form
+   
     healthRecordForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const formData = new FormData(healthRecordForm);
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Load health records
+  
     loadRecordsButton.addEventListener('click', async () => {
         try {
             const response = await fetch('/api/health-records');
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Clear all health records
+   
     clearRecordsButton.addEventListener('click', async () => {
         if (confirm("Are you sure you want to clear all records?")) {
             try {

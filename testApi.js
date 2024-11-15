@@ -1,14 +1,14 @@
 const axios = require('axios');
 
 async function testAPI() {
-    const symptoms = "fever"; // You can change this to test other symptoms
+    const symptoms = "fever";
 
     try {
         const response = await fetch("https://api.openai.com/v1/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer YOUR_OPENAI_API_KEY` // Replace this with your actual key or use process.env
+                "Authorization": `Bearer YOUR_OPENAI_API_KEY`
             },
             body: JSON.stringify({
                 model: "text-davinci-003",
@@ -19,11 +19,10 @@ async function testAPI() {
         });
 
         const data = await response.json();
-        console.log(data); // Log the API response to the console
+        console.log(data);
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
-// Call the test function
 testAPI();
