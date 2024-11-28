@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -13,29 +14,23 @@ const app = express();
 const PORT = 3000;
 const healthRecordsFilePath = path.join(__dirname, 'healthRecords.json');
 
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'frontend')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false,
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000
-    }
-  }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); 
+app.use(session({ secret: 'secret-key', resave: false, saveUninitialized: true }));
+
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+
 const users = {};
 const healthRecords = {};
 const appointments = {};
+
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -43,6 +38,7 @@ const upload = multer({
         filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
     })
 });
+
 
 app.post('/check-symptoms', async (req, res) => {
     const { symptoms } = req.body;
@@ -59,6 +55,7 @@ app.post('/check-symptoms', async (req, res) => {
     }
 });
 
+
 app.post('/register', (req, res) => {
     const { email, password, confirmPassword } = req.body;
 
@@ -74,6 +71,7 @@ app.post('/register', (req, res) => {
     res.status(200).json({ message: 'Registration successful!' });
 });
 
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -84,6 +82,7 @@ app.post('/login', (req, res) => {
         res.status(400).json({ message: 'Invalid email or password' });
     }
 });
+
 
 app.post('/api/health-records', upload.single('file'), (req, res) => {
     const { name, age, gender, medicalHistory } = req.body;
@@ -109,6 +108,7 @@ app.post('/api/health-records', upload.single('file'), (req, res) => {
     res.status(201).json({ message: 'Health record saved successfully!', record: newRecord });
 });
 
+
 app.get('/api/health-records', (req, res) => {
     const userEmail = req.session.user;
 
@@ -118,6 +118,7 @@ app.get('/api/health-records', (req, res) => {
 
     res.json(healthRecords[userEmail] || []);
 });
+
 
 app.delete('/api/health-records', (req, res) => {
     const userEmail = req.session.user;
@@ -129,6 +130,7 @@ app.delete('/api/health-records', (req, res) => {
     healthRecords[userEmail] = [];
     res.status(200).json({ message: 'All records cleared successfully!' });
 });
+
 
 app.post('/submit-feedback', upload.single('image'), (req, res) => {
     const { name, phone, email, issue, title, feedback, rating } = req.body;
@@ -146,12 +148,15 @@ app.post('/submit-feedback', upload.single('image'), (req, res) => {
     res.json({ message: "Thank you for your feedback!" });
 });
 
+
 app.post('/check-availability', (req, res) => {
     const { doctorName, date, time } = req.body;
-    const userEmail = req.session.user;
+    const userEmail = req.session.user;  
 
+   
     console.log(`Checking availability: doctorName=${doctorName}, date=${date}, time=${time}`);
 
+    
     const userAlreadyBooked = appointments[userEmail]?.some(
         appointment => appointment.doctorName === doctorName && appointment.date === date && appointment.time === time
     );
@@ -163,11 +168,13 @@ app.post('/check-availability', (req, res) => {
         });
     }
 
+   
     const isAvailable = !appointments[doctorName] || 
         !appointments[doctorName].some(appointment => 
             appointment.date === date && appointment.time === time);
 
     if (!isAvailable) {
+        
         const suggestedTime = add30Minutes(time);
 
         console.log(`Suggested time: ${suggestedTime}`);
@@ -184,21 +191,26 @@ app.post('/check-availability', (req, res) => {
     });
 });
 
+
 function add30Minutes(time) {
     const [hours, minutes] = time.split(":").map(Number);
 
+    
     let newMinutes = minutes + 30;
     let newHours = hours;
 
+    
     if (newMinutes >= 60) {
         newMinutes -= 60;
         newHours++;
     }
 
+  
     if (newHours >= 24) {
         newHours = 0;
     }
 
+    
     const formattedHours = newHours.toString().padStart(2, '0');
     const formattedMinutes = newMinutes.toString().padStart(2, '0');
 
@@ -207,6 +219,7 @@ function add30Minutes(time) {
 
 const pendingPayments = {};
 
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -214,24 +227,23 @@ const rl = readline.createInterface({
 
 app.post('/book-appointment', upload.single('medicalReports'), (req, res) => {
     const { doctorName, patientName, date, time, phoneNumber } = req.body;
-    const userEmail = req.session.user;
+    const userEmail = req.session.user;  
 
     console.log(`Booking appointment request: userEmail=${userEmail}, doctorName=${doctorName}, date=${date}, time=${time}`);
 
+   
     if (!userEmail) {
         console.log("User not logged in");
         return res.status(403).json({ message: 'User not logged in' });
     }
 
+ 
     if (!doctorName || !patientName || !date || !time || !phoneNumber) {
         console.log("Missing required fields");
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-   if (!appointments[userEmail]) {
-    appointments[userEmail] = [];
-}
-
+    
     const hasBookedWithSameDoctorOnSameDay = appointments[userEmail]?.some(
         appointment => appointment.doctorName === doctorName && appointment.date === date
     );
@@ -250,8 +262,9 @@ if (userAlreadyBooked) {
     return res.status(400).json({ message: 'Slot already booked for you on this date and time.' });
 }
 
+    
     const appointmentStart = new Date(`${date}T${time}`);
-    const appointmentEnd = new Date(appointmentStart.getTime() + 30 * 60000);
+    const appointmentEnd = new Date(appointmentStart.getTime() + 30 * 60000); 
 
     const isConflict = appointments[doctorName]?.some(appointment => {
         const existingStart = new Date(appointment.date + 'T' + appointment.time);
@@ -261,22 +274,26 @@ if (userAlreadyBooked) {
 
     if (isConflict) {
         console.log("Time conflict with another appointment");
-        const suggestedTime = new Date(appointmentStart.getTime() + 30 * 60000);
+     
+        const suggestedTime = new Date(appointmentStart.getTime() + 30 * 60000); 
     
-        const suggestedTimeStr = suggestedTime.toISOString().slice(11, 16);
+        const suggestedTimeStr = suggestedTime.toISOString().slice(11, 16); 
         return res.status(400).json({ message: `Time slot already booked for this doctor. You can try booking at ${suggestedTimeStr}.` });
     }
 
+    
     if (appointments[doctorName]?.filter(appt => appt.date === date).length >= 2) {
         console.log("Doctor reached daily limit");
         return res.status(400).json({ message: 'Doctor has already reached the daily limit for appointments.' });
     }
 
+  
     if (appointmentStart < new Date()) {
         console.log("Appointment time is in the past");
         return res.status(400).json({ message: 'Cannot book appointments in the past.' });
     }
 
+ 
     const appointmentId = `${userEmail}-${Date.now()}`;
     const newAppointment = {
         appointmentId,
@@ -288,19 +305,24 @@ if (userAlreadyBooked) {
         medicalReport: req.file ? req.file.filename : null,
         
     };
-     appointments[userEmail].push(newAppointment);
 
+    
     pendingPayments[appointmentId] = { confirmed: false, expired: false };
 
+    
     res.status(201).json({ message: 'Please proceed with payment.', appointment: newAppointment });
 
+    
     console.log('Appointment booked (pending):', newAppointment);
+
 
     rl.question(`Appointment booked! Please confirm payment for appointment ID: ${appointmentId}. Press "y" for payment received or "n" to decline: `, (input) => {
         if (input.toLowerCase() === 'y') {
+          
             pendingPayments[appointmentId].confirmed = true;
-            newAppointment.status = 'confirmed';
+            newAppointment.status = 'confirmed'; // Mark as confirmed
 
+            
             if (!appointments[userEmail]) appointments[userEmail] = [];
             if (!appointments[doctorName]) appointments[doctorName] = [];
 
@@ -309,8 +331,9 @@ if (userAlreadyBooked) {
 
             console.log(`Payment received for appointment: ${appointmentId}`);
         } else if (input.toLowerCase() === 'n') {
+           
             pendingPayments[appointmentId].expired = true;
-            newAppointment.status = 'expired';
+            newAppointment.status = 'expired'; 
             console.log(`Payment declined for appointment: ${appointmentId}`);
         } else {
             console.log('Invalid input. Please press "y" or "n".');
@@ -318,6 +341,7 @@ if (userAlreadyBooked) {
     });
 
 });
+
 
 app.post('/confirm-payment', (req, res) => {
     const { appointmentId, paymentStatus } = req.body;
@@ -343,6 +367,7 @@ app.post('/confirm-payment', (req, res) => {
     }
 });
 
+
 app.get('/check-payment-status/:appointmentId', (req, res) => {
     const appointmentId = req.params.appointmentId;
     const paymentStatus = pendingPayments[appointmentId];
@@ -359,6 +384,7 @@ app.get('/check-payment-status/:appointmentId', (req, res) => {
         res.json({ status: 'pending', message: 'Payment pending' });
     }
 });
+
 
 rl.on('line', (input) => {
     const [appointmentId, response] = input.split(" ");
